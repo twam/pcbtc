@@ -131,22 +131,22 @@ uint32_t curPeriode1 = 0;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	if(htim->Instance == TIM14)
-	{
-		//HAL_TIM_OnePulse_Start(&htim2, TIM_CHANNEL_2);
+  if(htim->Instance == TIM14)
+  {
+    //HAL_TIM_OnePulse_Start(&htim2, TIM_CHANNEL_2);
     if (TIM2->CNT == 0) {
       TIM2->ARR = (uint32_t)(curPeriode0 / CLAMP(((Iout/200)-10), 3, 16)); // Play first channel
-    	TIM2->CR1 = TIM2->CR1 | 1;
+      TIM2->CR1 = TIM2->CR1 | 1;
     }
-	}
-	if(htim->Instance == TIM15)
-	{
-		//HAL_TIM_OnePulse_Start(&htim2, TIM_CHANNEL_2);
+  }
+  if(htim->Instance == TIM15)
+  {
+    //HAL_TIM_OnePulse_Start(&htim2, TIM_CHANNEL_2);
     if (TIM2->CNT == 0) {
-    	TIM2->ARR = (uint32_t)(curPeriode1 / 8); // Play second channel with less power
-    	TIM2->CR1 = TIM2->CR1 | 1;
+      TIM2->ARR = (uint32_t)(curPeriode1 / 8); // Play second channel with less power
+      TIM2->CR1 = TIM2->CR1 | 1;
     }
-	}
+  }
 }
 
 /**
@@ -196,18 +196,18 @@ int main(void)
   HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, SET);
   HAL_GPIO_WritePin(LED_FAULT_GPIO, LED_FAULT_PIN, SET);
 
-	MX_DAC_Init();
+  MX_DAC_Init();
 
-	HAL_DAC_Start(&hdac, DAC_CHANNEL_1);
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 2048);
+  HAL_DAC_Start(&hdac, DAC_CHANNEL_1);
+  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 2048);
 
-	MX_TIM14_Init();
-	HAL_TIM_Base_Start_IT(&htim14);
-	TIM14->CR1 &= ~(1UL);
+  MX_TIM14_Init();
+  HAL_TIM_Base_Start_IT(&htim14);
+  TIM14->CR1 &= ~(1UL);
 
-	MX_TIM15_Init();
-	HAL_TIM_Base_Start_IT(&htim15);
-	TIM15->CR1 &= ~(1UL);
+  MX_TIM15_Init();
+  HAL_TIM_Base_Start_IT(&htim15);
+  TIM15->CR1 &= ~(1UL);
 
   MX_DMA_Init();
   MX_ADC_Init();
@@ -215,7 +215,7 @@ int main(void)
   HAL_ADC_Start_DMA(&hadc, (uint32_t*)adcBuffer, 3);
 
 
-	USER_TIM1_Init();
+  USER_TIM1_Init();
 
   //HAL_TIM_PWM_Start(&htim1);
   HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1);
@@ -224,8 +224,8 @@ int main(void)
 
   USER_TIM2_Init();
 
-	HAL_TIM_Base_Start(&htim2);
-	HAL_TIM_OnePulse_Start(&htim2, TIM_CHANNEL_2);
+  HAL_TIM_Base_Start(&htim2);
+  HAL_TIM_OnePulse_Start(&htim2, TIM_CHANNEL_2);
 
   /* USER CODE BEGIN 2 */
 
@@ -236,26 +236,26 @@ int main(void)
 
 
   if(FUNC_ERROR == midiInit() ){
-	  while(1){
-		  HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, SET);
-		  HAL_Delay(500);
-		  HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, RESET);
-		  HAL_Delay(500);
-	  }
+    while(1){
+      HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, SET);
+      HAL_Delay(500);
+      HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, RESET);
+      HAL_Delay(500);
+    }
   }
 
   //Wait usb configuration.
   while(1){
-	  if(USBD_STATE_CONFIGURED == hUsbDeviceFS.dev_state){
-		  //HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, SET);
-		  break;
-	  }else{
-		  HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, RESET);
-	  }
+    if(USBD_STATE_CONFIGURED == hUsbDeviceFS.dev_state){
+      //HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, SET);
+      break;
+    }else{
+      HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, RESET);
+    }
   }
 
   MX_TIM17_Init();
-	HAL_TIM_Base_Start_IT(&htim17);
+  HAL_TIM_Base_Start_IT(&htim17);
 
   for (uint32_t i = 0; i < Vmax; i+=100) {
     Vset = i;
@@ -269,114 +269,114 @@ int main(void)
   while (1)
   {
   //Wait USB configuration when USB connection error has occurred.
-	   while(1){
-				//HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, SET);
-			if(USBD_STATE_CONFIGURED == hUsbDeviceFS.dev_state){
-			  HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, SET);
-			  break;
-		  }else{
-			  HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, SET);
-			  HAL_Delay(200);
-			  HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, RESET);
-			  HAL_Delay(200);
-		  }
-	  }
+     while(1){
+        //HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, SET);
+      if(USBD_STATE_CONFIGURED == hUsbDeviceFS.dev_state){
+        HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, SET);
+        break;
+      }else{
+        HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, SET);
+        HAL_Delay(200);
+        HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, RESET);
+        HAL_Delay(200);
+      }
+    }
     if (HAL_GPIO_ReadPin(BUTTON_GPIO, BUTTON_PIN)) {
       dfu_otter_bootloader();
     }
 
 
-		curTone0 = 0;
-		curTone1 = 0;
+    curTone0 = 0;
+    curTone1 = 0;
 
-	  for( int i = 0; i < 16; i++ ) { // find max pitch from all channels
-	      if( freqs[i] > curTone0 ) {
-	          curTone1 = curTone0;
-	          curTone0 = freqs[i];
-	      }
-	      else if( freqs[i] > curTone1 ) {
-	          curTone1 = freqs[i];
-	      }
-	  }
+    for( int i = 0; i < 16; i++ ) { // find max pitch from all channels
+        if( freqs[i] > curTone0 ) {
+            curTone1 = curTone0;
+            curTone0 = freqs[i];
+        }
+        else if( freqs[i] > curTone1 ) {
+            curTone1 = freqs[i];
+        }
+    }
 
-		if (curTone0 > 20 && curTone0 != lastTone0) { // play one tone using TIM14
-			curPeriode0 = (uint32_t)1000000 / (uint32_t)(curTone0);
-			TIM14->CNT = 0;
-			TIM14->ARR = curPeriode0;
-			TIM14->CR1 = TIM14->CR1 | 1;
-			lastTone0 = curTone0;
-			noteTimeout = HAL_GetTick();
+    if (curTone0 > 20 && curTone0 != lastTone0) { // play one tone using TIM14
+      curPeriode0 = (uint32_t)1000000 / (uint32_t)(curTone0);
+      TIM14->CNT = 0;
+      TIM14->ARR = curPeriode0;
+      TIM14->CR1 = TIM14->CR1 | 1;
+      lastTone0 = curTone0;
+      noteTimeout = HAL_GetTick();
 
-			HAL_GPIO_WritePin(LED_FAULT_GPIO, LED_FAULT_PIN, SET);
-		} else if (curTone0 < 20 && curTone0 != lastTone0) {
-			TIM14->CR1 &= ~(1UL);
+      HAL_GPIO_WritePin(LED_FAULT_GPIO, LED_FAULT_PIN, SET);
+    } else if (curTone0 < 20 && curTone0 != lastTone0) {
+      TIM14->CR1 &= ~(1UL);
       curPeriode0 = 0;
 
-			HAL_GPIO_WritePin(LED_FAULT_GPIO, LED_FAULT_PIN, RESET);
-		}
+      HAL_GPIO_WritePin(LED_FAULT_GPIO, LED_FAULT_PIN, RESET);
+    }
 
-		if (curTone1 > 20 && curTone1 != lastTone1) { // play other polyphonic tone ussing TIM15
-			curPeriode1 = (uint32_t)1000000 / (uint32_t)(curTone1);
-			TIM15->CNT = 0;
-			TIM15->ARR = curPeriode1;
-			TIM15->CR1 = TIM15->CR1 | 1;
-			lastTone1 = curTone1;
-			noteTimeout = HAL_GetTick();
-		} else if (curTone1 < 20 && curTone1 != lastTone1) {
-			TIM15->CR1 &= ~(1UL);
+    if (curTone1 > 20 && curTone1 != lastTone1) { // play other polyphonic tone ussing TIM15
+      curPeriode1 = (uint32_t)1000000 / (uint32_t)(curTone1);
+      TIM15->CNT = 0;
+      TIM15->ARR = curPeriode1;
+      TIM15->CR1 = TIM15->CR1 | 1;
+      lastTone1 = curTone1;
+      noteTimeout = HAL_GetTick();
+    } else if (curTone1 < 20 && curTone1 != lastTone1) {
+      TIM15->CR1 &= ~(1UL);
       curPeriode1 = 0;
-		}
+    }
 
-		if ((HAL_GetTick() - noteTimeout) > 1000) {
-			TIM14->CR1 &= ~(1UL);
-			TIM15->CR1 &= ~(1UL);
-			for (int i = 0; i < 16; i++) {
-				freqs[i] = 0;
-			}
+    if ((HAL_GetTick() - noteTimeout) > 1000) {
+      TIM14->CR1 &= ~(1UL);
+      TIM15->CR1 &= ~(1UL);
+      for (int i = 0; i < 16; i++) {
+        freqs[i] = 0;
+      }
 
-			HAL_GPIO_WritePin(LED_FAULT_GPIO, LED_FAULT_PIN, RESET);
-		}
-
-
-		//[USB-MIDI IN] to [MIDI JACK OUT]
-
-		if( FUNC_SUCCESS == midiGetFromUsbRx(0, &uart_tx_dat)){
-			if (uart_tx_dat >> 7 == 1) {
-				midiBuffer[0] = uart_tx_dat;
-				midiBuffer[1] = 0;
-				midiBuffer[2] = 0;
-				midiState = 1;
-			} else if (midiState == 1) {
-				midiBuffer[1] = uart_tx_dat;
-				midiState = 2;
-			} else if (midiState == 2) {
-				midiBuffer[2] = uart_tx_dat;
-				midiState = 3;
-
-				if ((midiBuffer[0] & 0xF0) == 0x90) { // Note on, 2 data bytes
-					char key = midiBuffer[1];
-					char vel = midiBuffer[2];
-
-					uint16_t freq = pow(2,(key-0x45)/12.0)*440.0;
-					curChannel = midiBuffer[0] & 0xF;
-					freqs[curChannel] = freq;
+      HAL_GPIO_WritePin(LED_FAULT_GPIO, LED_FAULT_PIN, RESET);
+    }
 
 
-				} if ((midiBuffer[0] &0xF0) == 0x80) { // Note off, 2 data bytes
-					char key = midiBuffer[1];
-					char vel = midiBuffer[2];
+    //[USB-MIDI IN] to [MIDI JACK OUT]
 
-					uint16_t freq = pow(2,(key-0x45)/12.0)*440.0;
+    if( FUNC_SUCCESS == midiGetFromUsbRx(0, &uart_tx_dat)){
+      if (uart_tx_dat >> 7 == 1) {
+        midiBuffer[0] = uart_tx_dat;
+        midiBuffer[1] = 0;
+        midiBuffer[2] = 0;
+        midiState = 1;
+      } else if (midiState == 1) {
+        midiBuffer[1] = uart_tx_dat;
+        midiState = 2;
+      } else if (midiState == 2) {
+        midiBuffer[2] = uart_tx_dat;
+        midiState = 3;
 
-					//if (freqs[midiBuffer[0] & 0xF] == freq) {
-					freqs[midiBuffer[0] & 0xF] = 0;
-					//}
-				}
-			}
-		}
+        if ((midiBuffer[0] & 0xF0) == 0x90) { // Note on, 2 data bytes
+          char key = midiBuffer[1];
+          char vel = midiBuffer[2];
 
-	//[MIDI JACK IN] to [USB-MIDI OUT]
-	//midiProcess();
+          uint16_t freq = pow(2,(key-0x45)/12.0)*440.0;
+          curChannel = midiBuffer[0] & 0xF;
+          freqs[curChannel] = freq;
+
+
+        } if ((midiBuffer[0] &0xF0) == 0x80) { // Note off, 2 data bytes
+          char key = midiBuffer[1];
+          char vel = midiBuffer[2];
+
+          uint16_t freq = pow(2,(key-0x45)/12.0)*440.0;
+
+          //if (freqs[midiBuffer[0] & 0xF] == freq) {
+          freqs[midiBuffer[0] & 0xF] = 0;
+          //}
+        }
+      }
+    }
+
+  //[MIDI JACK IN] to [USB-MIDI OUT]
+  //midiProcess();
 
 
   }
@@ -559,31 +559,31 @@ static void MX_TIM17_Init(void)
 }
 
 static void USER_TIM2_Init(void) {
-	__HAL_RCC_TIM2_CLK_ENABLE();
+  __HAL_RCC_TIM2_CLK_ENABLE();
 
-	TIM_ClockConfigTypeDef sClockSourceConfig;
-	TIM_MasterConfigTypeDef sMasterConfig;
-	TIM_OC_InitTypeDef sConfigOC;
+  TIM_ClockConfigTypeDef sClockSourceConfig;
+  TIM_MasterConfigTypeDef sMasterConfig;
+  TIM_OC_InitTypeDef sConfigOC;
 
-	htim2.Instance = TIM2;
-	htim2.Init.Prescaler = 0;
-	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = 3200;
-	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
-	HAL_TIM_Base_Init(&htim2);
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 0;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 3200;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
+  HAL_TIM_Base_Init(&htim2);
 
-	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-	HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig);
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig);
 
-	sConfigOC.OCMode = TIM_OCMODE_PWM1;
-	sConfigOC.Pulse = 1;
-	sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
-	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-	HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2);
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 1;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2);
 
-	HAL_TIM_OnePulse_Init(&htim2, TIM_OPMODE_SINGLE);
-	HAL_TIM_MspPostInit(&htim2);
+  HAL_TIM_OnePulse_Init(&htim2, TIM_OPMODE_SINGLE);
+  HAL_TIM_MspPostInit(&htim2);
 }
 
 static void USER_TIM1_Init(void)
