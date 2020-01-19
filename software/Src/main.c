@@ -685,20 +685,31 @@ static void MX_GPIO_Init(void)
 
   GPIO_InitTypeDef GPIO_InitStruct;
 
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOF_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
+  /* BUTTON */
+  BUTTON_CLK_ENABLE();
+  GPIO_InitStruct.Pin = BUTTON_PIN;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(BUTTON_GPIO, &GPIO_InitStruct);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10|GPIO_PIN_15, GPIO_PIN_RESET);
-
-  /*Configure GPIO pins : PA4 PA5 PA6 PA7 */
-  GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_15;
+  /* LED_POW */
+  LED_POW_CLK_ENABLE();
+  HAL_GPIO_WritePin(LED_POW_GPIO, LED_POW_PIN, GPIO_PIN_RESET);
+  GPIO_InitStruct.Pin = LED_POW_PIN;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(LED_POW_GPIO, &GPIO_InitStruct);
+
+  /* LED_POW */
+  LED_FAULT_CLK_ENABLE();
+  HAL_GPIO_WritePin(LED_FAULT_GPIO, LED_FAULT_PIN, GPIO_PIN_RESET);
+  GPIO_InitStruct.Pin = LED_FAULT_PIN;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(LED_FAULT_GPIO, &GPIO_InitStruct);
 }
 
 /* USER CODE BEGIN 4 */

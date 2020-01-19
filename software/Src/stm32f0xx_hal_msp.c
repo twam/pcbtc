@@ -48,6 +48,7 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_hal.h"
+#include "device_conf.h"
 
 extern DMA_HandleTypeDef hdma_usart1_rx;
 
@@ -205,14 +206,15 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* htim)
 
   /* USER CODE END TIM4_MspPostInit 0 */
 
-    /**TIM4 GPIO Configuration
-    PB6     ------> TIM4_CH1
-    */
-    GPIO_InitStruct.Pin = GPIO_PIN_3;
+    /* TIM4 GPIO Configuration */
+    /* PWM_AUDIO */
+    PWM_AUDIO_CLK_ENABLE();
+    GPIO_InitStruct.Pin = PWM_AUDIO_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF2_TIM2;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+    HAL_GPIO_Init(PWM_AUDIO_GPIO, &GPIO_InitStruct);
 
     HAL_NVIC_SetPriority(TIM2_IRQn, 2, 0);
     HAL_NVIC_EnableIRQ(TIM2_IRQn);
@@ -227,15 +229,15 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* htim)
   /* USER CODE BEGIN TIM1_MspPostInit 0 */
 
   /* USER CODE END TIM1_MspPostInit 0 */
-    /**TIM1 GPIO Configuration
-    PA8     ------> TIM1_CH1
-    */
-    GPIO_InitStruct.Pin = GPIO_PIN_8;
+    /* TIM1 GPIO Configuration */
+    /* BOOST_GPIO */
+    BOOST_CLK_ENABLE();
+    GPIO_InitStruct.Pin = BOOST_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF2_TIM1;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    HAL_GPIO_Init(BOOST_GPIO, &GPIO_InitStruct);
 
   /* USER CODE BEGIN TIM1_MspPostInit 1 */
 
@@ -255,16 +257,26 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     /* Peripheral clock enable */
     __HAL_RCC_ADC1_CLK_ENABLE();
 
-    /**ADC GPIO Configuration
-    PA0     ------> ADC_IN0
-    PA1     ------> ADC_IN1
-    PA2     ------> ADC_IN2
-    PA3     ------> ADC_IN3
-    */
-    GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2;
+    /* I_OUT */
+    I_OUT_CLK_ENABLE();
+    GPIO_InitStruct.Pin = I_OUT_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    HAL_GPIO_Init(I_OUT_GPIO, &GPIO_InitStruct);
+
+    /* U_OUT */
+    U_OUT_CLK_ENABLE();
+    GPIO_InitStruct.Pin = U_OUT_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(U_OUT_GPIO, &GPIO_InitStruct);
+
+    /* I_OUT */
+    U_USB_CLK_ENABLE();
+    GPIO_InitStruct.Pin = U_USB_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(U_USB_GPIO, &GPIO_InitStruct);
 
     /* ADC1 DMA Init */
     /* ADC Init */
