@@ -561,7 +561,6 @@ static void MX_TIM17_Init(void)
 static void USER_TIM2_Init(void) {
   __HAL_RCC_TIM2_CLK_ENABLE();
 
-  TIM_ClockConfigTypeDef sClockSourceConfig;
   TIM_MasterConfigTypeDef sMasterConfig;
   TIM_OC_InitTypeDef sConfigOC;
 
